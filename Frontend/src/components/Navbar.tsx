@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
   const [isFixed, setIsFixed] = useState(false);
 
   const handleScroll = () => {
-    const headerHeight = 64; // Ajusta esta altura al valor real de tu header
+    const headerHeight = 64;
     setIsFixed(window.scrollY > headerHeight);
   };
 

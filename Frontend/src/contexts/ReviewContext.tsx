@@ -11,8 +11,8 @@ interface Review {
 }
 
 interface ReviewContextType {
-  reviews: Review[]; // Almacena todas las reseñas en general
-  reviewsByProduct: { [key: number]: Review[] }; // Reseñas organizadas por numericId
+  reviews: Review[];
+  reviewsByProduct: { [key: number]: Review[] }; 
   addReview: (numericId: number, review: Omit<Review, 'id' | 'date'>) => Promise<void>;
   getProductReviews: (numericId: number) => Promise<Review[]>;
 }
@@ -38,16 +38,16 @@ export const ReviewProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...review, numericId }), // Aquí, enviamos numericId como parte del JSON
+        body: JSON.stringify({ ...review, numericId }), 
       });
   
       if (response.ok) {
-        const newReview = await response.json(); // Suponemos que la respuesta JSON incluye un objeto con los detalles de la reseña
+        const newReview = await response.json(); 
   
         // Crear la reseña en el formato correcto
         const createdReview: Review = {
           ...review,
-          id: newReview.id, // Asegúrate de que el servidor devuelve un ID correcto
+          id: newReview.id, 
           numericId,
           date: newReview.date || new Date().toISOString(), // Tomamos la fecha del servidor, si está disponible
         };

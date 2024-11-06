@@ -3,6 +3,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Star } from 'lucide-react';
 import { debounce } from 'lodash';
+import { useThemeLanguage } from '../contexts/ThemeLanguageContext';
 
 interface Product {
   id: number;

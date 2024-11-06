@@ -17,7 +17,6 @@ const dbConfig = {
     database: process.env.DB_NAME,
 };
 
-// Crear el pool de conexiones
 const db = mysql.createPool(dbConfig);
 
 // Middleware
@@ -25,7 +24,6 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Configura Express para servir archivos estáticos desde la carpeta "public"
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Ruta base
@@ -35,7 +33,7 @@ app.get('/', (req, res) => {
 
 // Registro de usuario
 app.post('/register', (req, res) => {
-  const { username, email, password } = req.body; // Eliminar accountType
+  const { username, email, password } = req.body;
 
   // Verificar que todos los campos requeridos están presentes
   if (!username || !email || !password) {
@@ -56,7 +54,7 @@ app.post('/register', (req, res) => {
 
       // Construir la consulta para insertar un usuario
       const query = 'INSERT INTO usuarios (usuario, email, password, accountType) VALUES (?, ?, ?, ?)';
-      const values = [username, email, hashedPassword, 'user']; // Aquí se establece accountType como 'user'
+      const values = [username, email, hashedPassword, 'user'];
 
       // Ejecutar la consulta
       db.query(query, values, (err, result) => {
@@ -90,7 +88,7 @@ app.post('/login', (req, res) => {
   } else if (accountType === 'company') {
       query = 'SELECT * FROM empresas WHERE nombre_empresa = ?';
   } else if (accountType === 'admin') {
-      query = 'SELECT * FROM administradores WHERE nombre_admin = ?'; // Asegúrate de tener una tabla de administradores
+      query = 'SELECT * FROM administradores WHERE nombre_admin = ?'; 
   }
 
   // Ejecutar la consulta
@@ -118,7 +116,7 @@ app.post('/login', (req, res) => {
           // Ahora incluimos el id_usuario en la respuesta
           res.status(200).json({
               message: 'Inicio de sesión exitoso',
-              id_usuario: user.id_usuario, // Asegúrate de que este campo existe en tu tabla
+              id_usuario: user.id_usuario,
           });
       });
   });
@@ -157,7 +155,7 @@ app.get('/productos', (req, res) => {
                   image: `http://localhost:3001/images/products/${product.imagen}`,
                   brand: product.marca,
                   category: product.categoria,
-                  averageRating: product.promedio_calificacion // Incluye el promedio de calificación
+                  averageRating: product.promedio_calificacion 
               }));
               res.status(200).json(formattedResults);
           }
@@ -245,7 +243,7 @@ app.get('/detalle-producto/:id', (req, res) => {
 // Endpoint para enviar reseñas
 app.post('/send-reviews', async (req, res) => {
   console.log('Datos recibidos:', req.body);
-  const { userId, numericId, comment, rating } = req.body; // Cambiado a numericId para consistencia
+  const { userId, numericId, comment, rating } = req.body; 
 
   // Validar los datos
   if ( !userId || !numericId || !comment || !rating) {
@@ -253,7 +251,7 @@ app.post('/send-reviews', async (req, res) => {
   }
 
   const query = 'INSERT INTO resena (id_usuario, id_producto, resena, calificacion, date) VALUES (?, ?, ?, ?, NOW())';
-  const values = [userId, numericId, comment, rating]; // Usamos numericId aquí
+  const values = [userId, numericId, comment, rating]; 
 
   // Ejecutar la consulta
   db.query(query, values, (err, result) => {
@@ -267,7 +265,7 @@ app.post('/send-reviews', async (req, res) => {
       return res.status(201).json({
         id: newReviewId,
         userId,
-        numericId, // Usamos numericId en la respuesta
+        numericId, 
         comment,
         rating,
         date: new Date().toISOString(),
@@ -352,7 +350,7 @@ app.post('/add-to-cart', (req, res) => {
 
 // Endpoint para obtener los elementos del carrito por id_usuario
 app.get('/cart-items/:userId', (req, res) => {
-  const userId = req.params.userId; // Obtener el id de usuario de los parámetros de la URL
+  const userId = req.params.userId;
 
   const query = `
     SELECT id_usuario, id_carrito, nombre , imagen , 
@@ -388,10 +386,8 @@ app.get('/cart-items/:userId', (req, res) => {
 
 // Endpoint para obtener la cantidad de artículos en el carrito
 app.get('/cart-count', (req, res) => {
-  // Obtener el id_usuario del header
   const userId = req.headers['id_usuario'];
 
-  // Verificar que se haya proporcionado un id_usuario
   if (!userId) {
     return res.status(400).json({ message: 'id_usuario es requerido en los headers' });
   }
@@ -410,7 +406,7 @@ app.get('/cart-count', (req, res) => {
     }
 
     // Devolver la cantidad total (si no hay resultados, asumimos que es 0)
-    const count = results[0].total_count || 0; // Asumimos que si no hay items, es 0
+    const count = results[0].total_count || 0;
     res.status(200).json({ count });
   });
 });
@@ -475,7 +471,7 @@ app.post('/datos_usuario', (req, res) => {
 
 // Endpoint para obtener datos del usuario por ID usando la vista
 app.get('/datos_usuario/:id_usuario', (req, res) => {
-  const id_usuario = req.params.id_usuario; // Obtener el ID del usuario de los parámetros de la URL
+  const id_usuario = req.params.id_usuario;
 
   const query = `
     SELECT 
@@ -498,7 +494,7 @@ app.get('/datos_usuario/:id_usuario', (req, res) => {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    const usuario = results[0]; // Obtener el primer resultado
+    const usuario = results[0]; 
 
     // Enviar el usuario directamente en lugar de un array
     res.status(200).json({
@@ -542,7 +538,7 @@ app.post('/membership', (req, res) => {
 
   // Validación de los datos del cuerpo de la solicitud
   if (
-    !id_usuario || // Verifica que no sea null, undefined, o una cadena vacía
+    !id_usuario || 
     !nombre ||
     !color ||
     !fecha_inicio ||
@@ -582,7 +578,6 @@ app.get('/membership/:id_usuario', async (req, res) => {
   const { id_usuario } = req.params;
 
   try {
-    // Cambié la desestructuración para obtener correctamente el resultado
     db.query(
       `SELECT * FROM membresia WHERE id_usuario = ? ORDER BY fecha_expiracion DESC LIMIT 1`,
       [id_usuario],
@@ -606,7 +601,7 @@ app.get('/membership/:id_usuario', async (req, res) => {
 
         // Respuesta en el formato deseado
         res.status(200).json({
-          ID_Membresia: membership.id_membresia,  // Agregar el ID de la membresía
+          ID_Membresia: membership.id_membresia,
           ID_Usuario: id_usuario,
           Nombre: membership.nombre,
           Color: membership.color,
@@ -642,11 +637,10 @@ router.post('/forgot-password', (req, res) => {
           }
 
           // Si el usuario existe, obtener la contraseña en texto claro
-          const user = results[0]; // Suponiendo que el email es único, tomamos el primer resultado
+          const user = results[0]; 
 
-          // En un escenario real, no deberías enviar la contraseña en texto claro.
-          // En lugar de eso, deberías enviar un enlace para restablecer la contraseña.
-          res.json({ password: user.password });  // Esto es solo para fines de desarrollo
+          
+          res.json({ password: user.password });
 
       });
   } catch (error) {
@@ -655,6 +649,7 @@ router.post('/forgot-password', (req, res) => {
   }
 });
 
+//Ruta para la busqueda
 router.get('/search', (req, res) => {
   const { q } = req.query;
 
@@ -670,7 +665,7 @@ router.get('/search', (req, res) => {
       return res.status(500).json({ message: 'Error en la búsqueda.' });
     }
 
-    // Always return an array for consistency
+    
     res.json({ products: results.length ? results : [] });
   });
 });

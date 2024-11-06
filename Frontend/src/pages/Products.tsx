@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { Link, useNavigate } from 'react-router-dom'; 
 import { useThemeLanguage } from '../contexts/ThemeLanguageContext';
 import axios from 'axios';
 import { Star } from 'lucide-react';
@@ -11,7 +11,7 @@ interface Laptop {
   image: string;
   brand: string;
   category: string;
-  averageRating: number | null; // Permitir null
+  averageRating: number | null; 
 }
 
 const Products: React.FC = () => {
@@ -21,8 +21,7 @@ const Products: React.FC = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [allLaptops, setAllLaptops] = useState<Laptop[]>([]);
   const [filteredLaptops, setFilteredLaptops] = useState<Laptop[]>([]);
-  const navigate = useNavigate(); // Usamos useNavigate para manejar la navegación
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -61,7 +60,7 @@ const Products: React.FC = () => {
 
   // Función para manejar el regreso a la página anterior
   const handleBack = () => {
-    navigate(-1); // Regresa a la página anterior
+    navigate(-1); 
   };
 
   return (
@@ -70,7 +69,7 @@ const Products: React.FC = () => {
         {language === 'en' ? 'Our Products' : 'Nuestros Productos'}
       </h1>
 
-      {/* Botón para regresar */}
+      
       <button 
         onClick={handleBack} 
         className={`mb-8 px-4 py-2 rounded ${theme === 'dark' ? 'bg-teal-500 hover:bg-teal-600' : 'bg-teal-500 hover:bg-teal-600 text-white'}`}

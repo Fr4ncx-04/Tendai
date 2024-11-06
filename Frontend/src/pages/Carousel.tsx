@@ -3,22 +3,20 @@ import 'bootstrap';
 
 declare global {
     interface Window {
-        bootstrap: any; // Puedes usar 'typeof import("bootstrap")' para tipos más precisos si lo prefieres
+        bootstrap: any;
     }
 }
 
 const Carousel: React.FC = () => {
     useEffect(() => {
-        // Configura el intervalo para cambiar automáticamente
         const intervalId = setInterval(() => {
             const carouselElement = document.getElementById('carouselExampleIndicators');
             if (carouselElement) {
                 const carouselInstance = new window.bootstrap.Carousel(carouselElement);
                 carouselInstance.next();
             }
-        }, 3000); // Cambia de imagen cada 3 segundos
+        }, 3000); 
 
-        // Limpia el intervalo al desmontar el componente
         return () => clearInterval(intervalId);
     }, []);
 

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useThemeLanguage } from '../contexts/ThemeLanguageContext';
 import { FaCopy } from 'react-icons/fa'; 
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const { theme, language } = useThemeLanguage();  
-  const navigate = useNavigate();
+  const [showPassword] = useState(false);
+  const { theme, language } = useThemeLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,8 +33,8 @@ const ForgotPassword: React.FC = () => {
       }
 
       const data = await response.json();
-      setPassword(data.password); // Guardar la contraseña recuperada
-      alert('Contraseña recuperada. Puedes copiarla ahora.'); // Mensaje de éxito
+      setPassword(data.password); 
+      alert('Contraseña recuperada. Puedes copiarla ahora.'); 
     } catch (error) {
       console.error('Error al intentar recuperar la contraseña:', error);
       alert('Hubo un error al intentar recuperar la contraseña. Por favor, inténtalo de nuevo más tarde.');

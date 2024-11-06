@@ -11,12 +11,12 @@ const brands = [
 ];
 
 const BrandSection: React.FC = () => {
-  const { theme } = useThemeLanguage();
+  const { theme, language } = useThemeLanguage();
 
   return (
     <section className={`py-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
       <h2 className={`text-2xl font-bold mb-4 text-center ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
-        Descubre las mejores marcas
+      {language === 'en' ? 'Discover the best brands' : 'Descubre las mejores marcas'}
       </h2>
       <div className="flex justify-center space-x-8">
         {brands.map((brand) => (

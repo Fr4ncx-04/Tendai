@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // For React Router v6+
+import { useNavigate } from 'react-router-dom'; 
 import { useThemeLanguage } from '../contexts/ThemeLanguageContext';
 import { Building2, Shield, Globe } from 'lucide-react';
 
 const Info: React.FC = () => {
   const { theme, language } = useThemeLanguage();
-  const navigate = useNavigate(); // Navigate hook
+  const navigate = useNavigate(); 
 
   const content = {
     en: {
@@ -66,7 +66,7 @@ const Info: React.FC = () => {
 
       {/* Back Button */}
       <button
-        onClick={() => navigate(-1)} // Navigate back to the previous page
+        onClick={() => navigate(-1)} 
         className="text-white bg-blue-500 px-4 py-2 rounded-lg mb-8"
       >
         Back

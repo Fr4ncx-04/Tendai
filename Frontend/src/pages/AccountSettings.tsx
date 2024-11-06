@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom'; // Importa useHistory
+import { useNavigate } from 'react-router-dom';
+import { useThemeLanguage } from '../contexts/ThemeLanguageContext';
 
 const AccountSettings: React.FC = () => {
   const { user } = useAuth();
-  const navigate = useNavigate(); // Inicializa useHistory
+  const navigate = useNavigate();
+  const { theme, language } = useThemeLanguage();
+
   const [formData, setFormData] = useState({
     id_usuario: user?.id_usuario,
     Usuario: user?.name,
@@ -26,7 +29,6 @@ const AccountSettings: React.FC = () => {
       
       const data = await response.json();
       
-      // Si existen datos adicionales, llenamos el formulario y marcamos `hasData` como verdadero
       if (data.Telefono || data.direccion || data.codigo_postal) {
         setFormData({
           ...formData,
@@ -39,7 +41,7 @@ const AccountSettings: React.FC = () => {
         setHasData(false);
       }
     } catch (err) {
-      setError('Completa tu información');
+      setError(language === 'es' ? 'Completa tu información' : 'Complete your information');
     }
   };
 
@@ -60,7 +62,7 @@ const AccountSettings: React.FC = () => {
 
     const { id_usuario, Telefono, direccion, codigo_postal } = formData;
     if (!Telefono || !direccion || !codigo_postal) {
-      setError('Por favor, completa todos los campos antes de guardar.');
+      setError(language === 'es' ? 'Por favor, completa todos los campos antes de guardar.' : 'Please complete all fields before saving.');
       return;
     }
 
@@ -83,37 +85,41 @@ const AccountSettings: React.FC = () => {
       setError('');
       setIsEditable(false);
       
-      if (method === 'POST') setHasData(true); // Si era POST, ahora ya tenemos datos.
+      if (method === 'POST') setHasData(true); 
     } catch (err) {
-      setError(`No se pueden ${hasData ? 'actualizar' : 'enviar'} los datos adicionales del usuario`);
+      setError(
+        language === 'es' 
+          ? `No se pueden ${hasData ? 'actualizar' : 'enviar'} los datos adicionales del usuario` 
+          : `Cannot ${hasData ? 'update' : 'send'} additional user data`
+      );
       setSuccess('');
     }
   };
 
   const toggleEditLock = () => {
     setIsLocked(!isLocked);
-    setIsEditable(!isLocked); // Cambia el modo editable si está desbloqueado
+    setIsEditable(!isLocked);
   };
 
   const handleBack = () => {
-    navigate(-1); // Navega a la página anterior
+    navigate(-1); 
   };
 
   return (
-    <div className="container mx-auto mt-10">
-      <h1 className="text-3xl font-bold mb-8">Configuración de cuenta</h1>
+    <div className={`container mx-auto mt-10 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
+      <h1 className="text-3xl font-bold mb-8">{language === 'es' ? 'Configuración de cuenta' : 'Account Settings'}</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
         <div className="mb-4">
-          <label htmlFor="Usuario" className="block mb-2">Usuario</label>
+          <label htmlFor="Usuario" className="block mb-2">{language === 'es' ? 'Usuario' : 'Username'}</label>
           <input type="text" id="Usuario" name="Usuario" value={formData.Usuario} className="w-full px-3 py-2 border rounded" readOnly />
         </div>
         <div className="mb-4">
-          <label htmlFor="Correo" className="block mb-2">Correo</label>
+          <label htmlFor="Correo" className="block mb-2">{language === 'es' ? 'Correo' : 'Email'}</label>
           <input type="email" id="Correo" name="Correo" value={formData.Correo} className="w-full px-3 py-2 border rounded" readOnly />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="Telefono" className="block mb-2">Telefono</label>
+          <label htmlFor="Telefono" className="block mb-2">{language === 'es' ? 'Teléfono' : 'Phone'}</label>
           <input
             type="tel"
             id="Telefono"
@@ -125,7 +131,7 @@ const AccountSettings: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="direccion" className="block mb-2">Dirección</label>
+          <label htmlFor="direccion" className="block mb-2">{language === 'es' ? 'Dirección' : 'Address'}</label>
           <input
             type="text"
             id="direccion"
@@ -137,7 +143,7 @@ const AccountSettings: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="codigo_postal" className="block mb-2">Código postal</label>
+          <label htmlFor="codigo_postal" className="block mb-2">{language === 'es' ? 'Código postal' : 'Postal Code'}</label>
           <input
             type="text"
             id="codigo_postal"
@@ -152,7 +158,7 @@ const AccountSettings: React.FC = () => {
         <div className="flex items-center mb-4">
           {isEditable ? (
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-              Guardar cambios
+              {language === 'es' ? 'Guardar cambios' : 'Save Changes'}
             </button>
           ) : (
             <button
@@ -161,7 +167,7 @@ const AccountSettings: React.FC = () => {
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
               disabled={isLocked}
             >
-              {hasData ? 'Editar' : 'Completar datos'}
+              {hasData ? (language === 'es' ? 'Editar' : 'Edit') : (language === 'es' ? 'Completar datos' : 'Complete Data')}
             </button>
           )}
           <button onClick={toggleEditLock} type="button" className="ml-4 text-gray-600 hover:text-gray-800">
@@ -170,7 +176,7 @@ const AccountSettings: React.FC = () => {
         </div>
 
         <button onClick={handleBack} type="button" className="mt-4 bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">
-          Volver
+          {language === 'es' ? 'Volver' : 'Back'}
         </button>
       </form>
 

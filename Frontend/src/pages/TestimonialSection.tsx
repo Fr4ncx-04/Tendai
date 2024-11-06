@@ -28,7 +28,7 @@ const testimonials: Testimonial[] = [
   {
     name: 'Cesar',
     platform: 'Tendai',
-    text: { es: 'Muy buen servicio, cumplieron con la garantía del dron.', en: 'Great service, fulfilled the drone’s warranty.' },
+    text: { es: 'Muy buen servicio, cumplieron con la garantía.', en: 'Great service, fulfilled warranty.' },
   }
 ];
 
@@ -36,13 +36,13 @@ const TestimonialsSection: React.FC = () => {
   const { theme, language } = useThemeLanguage();
 
   return (
-    <section className={`py-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
-      <h2 className={`text-2xl font-bold mb-4 text-center ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+    <section className={`py-8 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
+      <h2 className="text-2xl font-bold mb-4 text-center">
         {language === 'es' ? 'Lo que dicen nuestros clientes' : 'What Our Customers Say'}
       </h2>
       <div className="flex flex-wrap justify-center gap-4">
         {testimonials.map((testimonial, index) => (
-          <div key={index} className={`bg-white rounded-lg p-4 w-full md:w-1/2 lg:w-1/3 shadow-md transition-opacity duration-700 ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}>
+          <div key={index} className={`rounded-lg p-4 w-full md:w-1/2 lg:w-1/3 shadow-md transition-opacity duration-700 ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}>
             <div className="flex items-center">
               {testimonial.image ? (
                 <img
@@ -51,8 +51,8 @@ const TestimonialsSection: React.FC = () => {
                   className="w-12 h-12 rounded-full object-cover mr-4"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mr-4">
-                  <User className="text-gray-500" /> {/* Ícono de usuario */}
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${theme === 'dark' ? 'bg-gray-500' : 'bg-gray-300'}`}>
+                  <User className={`${theme === 'dark' ? 'text-gray-200' : 'text-gray-500'}`} /> {/* Ícono de usuario */}
                 </div>
               )}
               <div className="flex flex-col">
@@ -70,7 +70,7 @@ const TestimonialsSection: React.FC = () => {
       <div className="text-center mt-4">
         <a
           href="#"
-          className={`text-green-500 ${theme === 'dark' ? 'text-green-300' : 'text-green-500'}`}
+          className={`underline ${theme === 'dark' ? 'text-green-300' : 'text-green-500'}`}
         >
           {language === 'es' ? 'Comparte tu experiencia' : 'Share Your Experience'}
         </a>

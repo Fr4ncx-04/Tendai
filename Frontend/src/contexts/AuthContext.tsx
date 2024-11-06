@@ -69,19 +69,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const data = await response.json();
         console.log('Fetched membership data:', data);
 
-        // Asegúrate de que las propiedades coincidan
         setUser((prevUser) => {
             if (!prevUser) return null;
 
             return {
                 ...prevUser,
                 membership: {
-                    id_usuario: data.ID_Usuario,  // Asegúrate que el nombre coincida
-                    name: data.Nombre,              // Ajustado a la propiedad de la interfaz
+                    id_usuario: data.ID_Usuario,  
+                    name: data.Nombre,             
                     color: data.Color,
                     purchaseDate: new Date(data.Fecha_Inicio),
                     expiryDate: new Date(data.Fecha_Expiracion),
-                    benefits: data.Beneficios || [], // Agregar si existe en la respuesta
+                    benefits: data.Beneficios || [], 
                 },
             };
         });

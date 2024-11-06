@@ -3,7 +3,7 @@ import { Trash2 } from 'lucide-react';
 import { useThemeLanguage } from '../contexts/ThemeLanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
-import { useNavigate } from 'react-router-dom';  // Import the useNavigate hook
+import { useNavigate } from 'react-router-dom'; 
 
 interface CartItem {
   id_carrito: number;
@@ -16,14 +16,14 @@ interface CartItem {
 }
 
 const Cart: React.FC = () => {
-  const { theme } = useThemeLanguage();
+  const { theme, language } = useThemeLanguage();
   const { user } = useAuth();
   const userId = user?.id_usuario;
   const { fetchCartCount } = useCart();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate(); // Initialize the navigate hook
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -38,7 +38,7 @@ const Cart: React.FC = () => {
         setCartItems(data);
       } catch (error) {
         console.error('Error fetching cart items:', error);
-        setError('Su carrito esta vacio, por favor agregue productos.');
+        setError(language === 'en' ? 'Your cart is empty, please add products.' : 'Su carrito está vacío, por favor agregue productos.');
         setCartItems([]);
       } finally {
         setLoading(false);
@@ -68,7 +68,7 @@ const Cart: React.FC = () => {
       await fetchCartCount();
     } catch (error) {
       console.error('Error updating item quantity:', error);
-      setError('No se pudo actualizar la cantidad del producto.');
+      setError(language === 'en' ? 'Failed to update product quantity.' : 'No se pudo actualizar la cantidad del producto.');
     }
   };
 
@@ -86,7 +86,7 @@ const Cart: React.FC = () => {
       await fetchCartCount();
     } catch (error) {
       console.error('Error deleting item:', error);
-      setError('No se pudo eliminar el producto del carrito.');
+      setError(language === 'en' ? 'Failed to remove product from cart.' : 'No se pudo eliminar el producto del carrito.');
     }
   };
 
@@ -115,7 +115,7 @@ const Cart: React.FC = () => {
     } else {
       // Si el tipo de pago es contado
       firstPayment = totalPrice;
-      shippingCost = getShippingCost(0, totalPrice);  // Envío único para contado
+      shippingCost = getShippingCost(0, totalPrice);  
     }
 
     const totalCost = firstPayment + shippingCost;
@@ -155,20 +155,20 @@ const Cart: React.FC = () => {
         Back
       </button>
       
-      <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+      <h1 className="text-3xl font-bold mb-8">{language === 'en' ? 'Your Cart' : 'Tu Carrito'}</h1>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p>{language === 'en' ? 'Your Cart is empty' : 'Tu Carrito esta vacio'}</p>
       ) : (
         <div className="shadow-md rounded my-6">
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-600 text-white uppercase text-sm leading-normal">
-                <th className="py-3 px-6 text-left">Product</th>
-                <th className="py-3 px-6 text-left">Image</th>
-                <th className="py-3 px-6 text-center">Quantity</th>
-                <th className="py-3 px-6 text-center">Payment Plan</th>
-                <th className="py-3 px-6 text-center">Price</th>
-                <th className="py-3 px-6 text-center">Actions</th>
+                <th className="py-3 px-6 text-left">{language === 'en' ? 'Product' : 'Producto'}</th>
+                <th className="py-3 px-6 text-left">{language === 'en' ? 'Image' : 'Imagen'}</th>
+                <th className="py-3 px-6 text-center">{language === 'en' ? 'Quantity' : 'Cantidad'}</th>
+                <th className="py-3 px-6 text-center">{language === 'en' ? 'Payment Plan' : 'Plan de Pago'}</th>
+                <th className="py-3 px-6 text-center">{language === 'en' ? 'Price' : 'Precio'}</th>
+                <th className="py-3 px-6 text-center">{language === 'en' ? 'Actions' : 'Acciones'}</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
@@ -209,12 +209,12 @@ const Cart: React.FC = () => {
           <div className={`flex justify-between p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
             <div className="flex justify-between w-full">
               <div>
-                <h2 className="font-bold">Total Contado: ${totalContado.toFixed(2)}</h2>
-                <h2 className="font-bold">Total Crédito Primer Pago: ${totalCreditoPrimerPago.toFixed(2)}</h2>
+                <h2 className="font-bold">{language === 'en' ? 'Total Cash' : 'Total Contado'}: ${totalContado.toFixed(2)}</h2>
+                <h2 className="font-bold">{language === 'en' ? 'Credit Total First Pay' : 'Total Credito Primer Pago'}: ${totalCreditoPrimerPago.toFixed(2)}</h2>
               </div>
               <div>
                 <button className='bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-3 transition duration-300' onClick={Handlepayproduct}>
-                  Proceder al pago
+                {language === 'en' ? 'Proceed To Payment' : 'Proceder al Pago'}
                 </button>
               </div>
             </div>

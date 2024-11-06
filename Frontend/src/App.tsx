@@ -17,7 +17,6 @@ import Memberships from './pages/Memberships';
 import AccountSettings from './pages/AccountSettings';
 import CompanyDashboard from './pages/CompanyDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-import BrandPage from './pages/BrandPage';
 import Payment from './pages/Payment';
 import Products from './pages/Products';
 import Info from './pages/Info';
@@ -51,7 +50,6 @@ function App() {
                     <Route path="/accountsettings" element={<AccountSettings />} />
                     <Route path="/company-dashboard" element={<CompanyDashboard />} />
                     <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                    <Route path="/brand/:brandName" element={<BrandPage />} />
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/forgotpassword" element={<ForgotPassword />}/>
                     <Route path= "/search" element={<SearchPage />}/>

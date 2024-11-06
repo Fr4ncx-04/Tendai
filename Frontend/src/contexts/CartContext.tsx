@@ -7,14 +7,14 @@ interface CartItem {
   id_producto: number; // ID del producto
   cantidad: number; // Cantidad del producto
   tipo_pago: string; // Tipo de pago
-  meses?: number | null; // Meses de financiación (opcional)
+  meses?: number | null; // Meses 
 }
 
 
 interface CartContextType {
   cartItems: CartItem[];
   cartCount: number;
-  addToCart: (item: CartItem) => void; // Cambiado a aceptar un item
+  addToCart: (item: CartItem) => void; 
   fetchCartCount: () => Promise<void>;
 }
 
@@ -31,7 +31,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return; // Evita agregar un producto inválido
     }
 
-    setCartItems((prevItems) => [...prevItems, item]); // Agrega el nuevo item al carrito
+    setCartItems((prevItems) => [...prevItems, item]); 
     setCartCount((prevCount) => prevCount + item.cantidad);
   };
 
