@@ -147,7 +147,6 @@ const Cart: React.FC = () => {
 
   return (
     <div className={`mx-auto ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
-      {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
@@ -171,7 +170,8 @@ const Cart: React.FC = () => {
                 <th className="py-3 px-6 text-center">{language === 'en' ? 'Actions' : 'Acciones'}</th>
               </tr>
             </thead>
-            <tbody className="text-gray-600 text-sm font-light">
+            <tbody
+      className={`${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-black'} text-sm font-light uppercase font-family: 'Roboto', sans-serif`}>
               {cartItems.map(item => {
                 const { monthlyPayment } = calculatePaymentDetails(item);
                 const totalPrice = item.price * item.quantity;
@@ -190,7 +190,7 @@ const Cart: React.FC = () => {
                     <td className="py-3 px-6 text-center">
                       {item.tipo_pago === 'credito' ? `${item.months} months` : 'Contado'}
                       {item.tipo_pago === 'credito' && (
-                        <div className="text-sm text-gray-500">
+                        <div className={`${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-black'} text-sm font-light uppercase font-family: 'Roboto', sans-serif`}>
                           Mensualidad: ${monthlyPayment.toFixed(2)}
                         </div>
                       )}
@@ -208,7 +208,7 @@ const Cart: React.FC = () => {
           </table>
           <div className={`flex justify-between p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
             <div className="flex justify-between w-full">
-              <div>
+              <div className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-black'} text-sm font-light uppercase font-family: 'Roboto', sans-serif`}>
                 <h2 className="font-bold">{language === 'en' ? 'Total Cash' : 'Total Contado'}: ${totalContado.toFixed(2)}</h2>
                 <h2 className="font-bold">{language === 'en' ? 'Credit Total First Pay' : 'Total Credito Primer Pago'}: ${totalCreditoPrimerPago.toFixed(2)}</h2>
               </div>

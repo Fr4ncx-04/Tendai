@@ -15,6 +15,7 @@ interface User {
   id_usuario: number;
   name: string;
   email: string;
+  address: string;
   type: 'user' | 'company' | 'admin';
   membership?: Membership;
 }

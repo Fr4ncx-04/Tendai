@@ -457,6 +457,25 @@ app.delete('/delete-cart-item/:id_carrito', (req, res) => {
   });
 });
 
+app.delete('/clear-cart/:id_usuario', (req,res) => {
+  const idUsuario = req.params.id_usuario;
+
+  const query = `DELETE FROM carrito WHERE id_usuario = ?`;
+
+  db.query(query, [idUsuario], (err, results) => {
+    if (err) {
+      console.error('Error al eliminar el producto del carrito:', err);
+      return res.status(500).json({ error: 'Error en la consulta' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Producto no encontrado en el carrito' });
+    }
+
+    res.status(200).json({ message: 'Carrito eliminado correctamente' });
+  });
+})
+
 app.post('/datos_usuario', (req, res) => {
   const { id_usuario, Telefono, direccion, codigo_postal } = req.body;
 
@@ -669,8 +688,6 @@ router.get('/search', (req, res) => {
     res.json({ products: results.length ? results : [] });
   });
 });
-
-
 
 module.exports = router;
 

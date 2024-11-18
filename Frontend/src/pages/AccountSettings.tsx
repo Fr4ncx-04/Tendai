@@ -13,7 +13,7 @@ const AccountSettings: React.FC = () => {
     Usuario: user?.name,
     Correo: user?.email,
     Telefono: '',
-    direccion: '',
+    direccion: user?.address,
     codigo_postal: ''
   });
   const [error, setError] = useState('');
